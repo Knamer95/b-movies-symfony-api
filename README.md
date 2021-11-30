@@ -33,47 +33,49 @@ Es posible que se necesite habilitar los módulos headers_module y rewrite_modul
 	- API_PATH (Path de la API, en nuestro caso `https://api.themoviedb.org/3`)
 	
 3) Una vez hecho esto, tendremos acceso a 3 de las 4 operaciones. Para la cuarta (POST), necesitaremos seguir una serie de pasos (detallados [aquí](https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id)
-	3.1) Solicitar un request_token. Esto se puede hacer de varias formas. Una sería crear una función PHP. Por ejemplo:
+
+- Solicitar un request_token. Esto se puede hacer de varias formas. Una sería crear una función PHP. Por ejemplo:
 	
 ```
-	function getAPIRequestToken() {
-		$url = "{$_ENV["API_PATH"]}/authentication/token/new";
-		$params = ["api_key" => $_ENV["API_KEY"]];
+function getAPIRequestToken() {
+	$url = "{$_ENV["API_PATH"]}/authentication/token/new";
+	$params = ["api_key" => $_ENV["API_KEY"]];
 
-		$rs = $this->sendRequest($url, "GET", $params);
+	$rs = $this->sendRequest($url, "GET", $params);
 
-		if ($rs["result"]["request_token"]) {
-			$request_token = $rs["result"]["request_token"];
-			return $request_token;
-		}
-
-		return null;
+	if ($rs["result"]["request_token"]) {
+		$request_token = $rs["result"]["request_token"];
+		return $request_token;
 	}
+
+	return null;
+}
 ```
 
-	Más sencillo, con Postman: 
-	Endpoint: https://api.themoviedb.org/3/authentication/token/new
-	Parámetros: api_key (GET)
+Más sencillo, con Postman: 
+Endpoint: https://api.themoviedb.org/3/authentication/token/new
+Parámetros: api_key (GET)
 	
-	3.2) Con el request_token, acceder a https://www.themoviedb.org/authenticate/{request_token}
+- Con el request_token, acceder a https://www.themoviedb.org/authenticate/{request_token}
 	
-	3.3) Una vez obtengamos el request_token, podremos proseguir, para generar un session_id. Desde PHP (como anteriormente), sería
+- Una vez obtengamos el request_token, podremos proseguir, para generar un session_id. Desde PHP (como anteriormente), sería
+
 
 ```
-	function getAPISession() {
-		$params = ["request_token" => $_ENV['REQUEST_TOKEN']];
-		$url = "{$_ENV["API_PATH"]}/authentication/session/new?api_key={$_ENV["API_KEY"]}";
+function getAPISession() {
+	$params = ["request_token" => $_ENV['REQUEST_TOKEN']];
+	$url = "{$_ENV["API_PATH"]}/authentication/session/new?api_key={$_ENV["API_KEY"]}";
 
-		$rs = $this->sendRequest($url, "POST", $params);
-		return $rs;
-	}
+	$rs = $this->sendRequest($url, "POST", $params);
+	return $rs;
+}
 ```
 
-	Más sencillo, con Postman: 
-	Endpoint: https://api.themoviedb.org/3/authentication/session/new
-	Parámetros: api_key (GET), request_token (POST)
+Más sencillo, con Postman: 
+Endpoint: https://api.themoviedb.org/3/authentication/session/new
+Parámetros: api_key (GET), request_token (POST)
 	
-	Con esto obtendremos nuestro session_id. (Se requiere registrarse en la web de TheMovieDB, si no se está ya)
+Con esto obtendremos nuestro session_id. (Se requiere registrarse en la web de TheMovieDB, si no se está ya)
 	
 4) Ahora que tenemos nuestro session_id, podemos añadirlo al fichero .env también:
 	- API_SESSION (necesario para ciertas operaciones)
