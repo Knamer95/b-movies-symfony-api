@@ -1,0 +1,25 @@
+#index:
+#    path: /
+#    controller: App\Controller\MoviesController::index
+
+# ROUTES FOR THE CONTROLLER: MOVIES
+
+movies:
+    path: /movies
+    controller: App\Controller\MoviesController::index
+
+popular_movies:
+    path: /movies/popular
+    controller: App\Controller\MoviesController::getPopularMovies
+
+search_movies:
+    path: /movies/search
+    controller: App\Controller\MoviesController::getMoviesBySearch    
+
+movie:
+    path: /movie/{id}
+    controller: App\Controller\MoviesController::getMovie
+
+vote_movie:
+    path: /movie/{id}/vote
+    controller: App\Controller\MoviesController::voteMovie
