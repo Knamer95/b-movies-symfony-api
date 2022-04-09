@@ -2,7 +2,7 @@
 
 ## Introduction
 
-or this project, I used `Symfony 5.3`. It uses the basic skeleton, and a few basic packages, such as `apache-pack`, `FOS/rest-bundle`, `serializer`, etc.
+For this project, I used `Symfony 5.3`. It uses the basic skeleton, and a few basic packages, such as `apache-pack`, `FOS/rest-bundle`, `serializer`, etc.
 
 It's an API that serves as a "gateway" between the `React` application,  and the [TheMovieDB](https://www.themoviedb.org/?language=es-ES) API.
 
