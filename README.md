@@ -1,40 +1,40 @@
 # B-Movies API
 
-## Introducción
+## Introduction
 
-Para este proyecto he usado la versión de `Symfony 5.3`. Utiliza el esqueleto básico, y a partir de éste una serie de paquetes básicos, como `apache-pack`, `FOS/rest-bundle`, `serializer`, etc.
+or this project, I used `Symfony 5.3`. It uses the basic skeleton, and a few basic packages, such as `apache-pack`, `FOS/rest-bundle`, `serializer`, etc.
 
-Se trata de una API que sirve de "gateway" entre la herramienta de `React`, y la API de [TheMovieDB](https://www.themoviedb.org/?language=es-ES).
+It's an API that serves as a "gateway" between the `React` application,  and the [TheMovieDB](https://www.themoviedb.org/?language=es-ES) API.
 
-Utiliza 4 endpoints, localizables en `config/routes.yaml` (la función `index` no hace nada).
+It uses 4 endpoints, located at `config/routes.yaml` (the `index` endpoint does nothing).
 
-Para todos ellos, es necesario proveer una API key. Para el endpoint `/movie/{id}/vote`, además requerirá un session_id (o session_guest_id), explicado más abajo.
-
-
-## Instalación
-
-1) Clonar repositorio (yo usé `WAMP`, por lo que el proyecto está servido dentro de la carpeta `www`)
-
-2) Ir a la carpeta raíz del proyecto
-
-3) Ejecutar el comando `composer install`
-
-Una vez hecho esto, podemos ejecutar el servidor que alojará el proyecto.
-
-Es posible que se necesite habilitar los módulos headers_module y rewrite_module para Apache. Para posibles problemas de CORS, en `/public/index.php` he definido headers para permitir todas las opciones (GET/POST/PUT/DELETE/OPTIONS/...), desde cualquier origen. Esto solo es recomendable en un entorno de desarrollo, si se quisiese usar esto, se debería corregir para que solo admita los orígenes y opciones deseados.
+For all of them, it's required to provide an API key. For the `/movie/{id}/vote` endpoint, it will also require a session_id (or session_guest_id), explained below.
 
 
-## Pasos a seguir
+## Installation
 
-1) Crear fichero .env si no está creado en la raíz (se puede crear otro en otra ruta también si se desea)
+1) Clone repository (I used `WAMP`, so the project is served inside the `www` folder)
 
-2) Añadir los campos: 
-	- API_KEY (key para hacer requests a la API)
-	- API_PATH (Path de la API, en nuestro caso `https://api.themoviedb.org/3`)
+2) Go to the root folder
+
+3) Run the command `composer install`
+
+Once everything is done, we can run the server that will host the project.
+
+It's possible that the headers_module and rewrite_module need to be enabled for Apache. For possible CORS issues, I defined headers to allow every option it `/public/index.php` (GET/POST/PUT/DELETE/OPTIONS/...), from any origin. This is only recommended in a development env. If you wanted to use this config in a production server, you should config it so it only admits the desired origins and options.
+
+
+## Steps to follow
+
+1) Create an .env file if there is none in the root (can be created elsewhere if desired)
+
+2) Add the variables: 
+	- API_KEY (key for the TheMovieDB API requests)
+	- API_PATH (Path of the API, in our case `https://api.themoviedb.org/3`)
 	
-3) Una vez hecho esto, tendremos acceso a 3 de las 4 operaciones. Para la cuarta (POST), necesitaremos seguir una serie de pasos (detallados [aquí](https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id))
+3) Once all this is set up, we will have access to 3 of the 4 operations. For the fourth (POST), we will need to follow a few steps (detailed [here](https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id))
 
-- Solicitar un request_token. Esto se puede hacer de varias formas. Una sería crear una función PHP. Por ejemplo:
+- Request a request_token. This can be done in many ways. One would be creating a PHP function. For example:
 	
 ```
 function getAPIRequestToken() {
@@ -52,14 +52,14 @@ function getAPIRequestToken() {
 }
 ```
 
-Más sencillo, con Postman:
+Easier, with Postman:
 
 Endpoint: https://api.themoviedb.org/3/authentication/token/new
-Parámetros: api_key (GET)
+Params: api_key (GET)
 	
-- Con el request_token, acceder a https://www.themoviedb.org/authenticate/{request_token}
+- With the request_token, access to https://www.themoviedb.org/authenticate/{request_token}
 	
-- Una vez hayamos verificado el usuario, podremos proseguir, para generar un session_id. Desde PHP (como anteriormente), sería:
+- Once we have verified the user, we will be able to continue, to generate a session_id. From PHP (like before), it'd be:
 
 
 ```
@@ -72,19 +72,17 @@ function getAPISession() {
 }
 ```
 
-Más sencillo, con Postman:
+Easier, with Postman:
 
 Endpoint: https://api.themoviedb.org/3/authentication/session/new
-Parámetros: api_key (parámetros de la query), request_token (POST)
-	
-Con esto obtendremos nuestro session_id. (Se requiere registrarse en la web de TheMovieDB para autentificar el usuario, si no se está ya)
-	
-4) Ahora que tenemos nuestro session_id, podemos añadirlo al fichero .env también:
-	- API_SESSION (necesario para ciertas operaciones)
+Params: api_key (query params), request_token (POST)
+
+With this we will obtain our session_id. (It's required to register in the TheMovieDB website to authenticate the user, if it's not already)
+
+4) Now that we have our session_id, we can add it to the .env file as well:
+	- API_SESSION (needed for certain operations)
 	
 
-## Conclusiones
+## Conclusions
 
-La API me ha parecido potente por lo que he leído en la documentación. Viene todo muy bien detallado. Sin embargo, haciendo búsquedas, he visto que hay series que no están bien nombradas, o que no siguen un patrón determinado.
-
-El proyecto me ha servido para recordar cómo funciona una API simple de Symfony, y aprender alguna cosa nueva :).
+The API seems to be powerful and well documented. As a small criticism, some series seem to not be named properly, or don't follow a determined pattern.
